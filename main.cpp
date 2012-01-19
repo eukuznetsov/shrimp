@@ -1,5 +1,6 @@
 #include <iostream>
 #include <boost/property_tree/ini_parser.hpp>
+#include "inbasereader.h"
 
 int main()
 {
@@ -16,6 +17,14 @@ int main()
                 << error.line() << std::endl;
         exit(1);
     }
+    try
+    {
+        InBaseReader log("/etc/shrimp.ini");
+    }
+    catch(...)
+    {
+        //process exception
+    }
+
     return 0;
 }
-
