@@ -4,8 +4,10 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     inbase.cpp \
-    error.cpp
+    error.cpp \
+    inotify-cxx.cpp
 
 HEADERS += \
-    reader.h
+    reader.h \
+    inotify-cxx.h
 

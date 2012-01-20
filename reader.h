@@ -17,6 +17,7 @@ class InBase
 public:
     InBase(char*);
     const char* filepath() { return filePath.c_str(); }
+    void watch();
 };
 
 class Error:public std::exception
