@@ -3,8 +3,9 @@ CONFIG += console
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    inbasereader.cpp
+    inbase.cpp \
+    error.cpp
 
 HEADERS += \
-    inbasereader.h
+    reader.h
 

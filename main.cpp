@@ -1,6 +1,6 @@
 #include <iostream>
 #include <boost/property_tree/ini_parser.hpp>
-#include "inbasereader.h"
+#include "reader.h"
 
 int main()
 {
@@ -19,12 +19,12 @@ int main()
     }
     try
     {
-        InBaseReader log("/etc/shrimp.ini");
+        Reader::InBase log("/etc/shrimp.ini");
     }
-    catch(...)
-    {
-        //process exception
+    catch (Reader::Error& e) {
+        std::cout
+                << e.what() << " "
+                << e.filepath() << std::endl;
     }
-
     return 0;
 }
