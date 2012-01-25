@@ -18,6 +18,7 @@ public:
     InBaseReader(char*);
     const char* filepath() { return filePath.c_str(); }
     void watch();
+    ~InBaseReader();
 };
 
 class InBaseReaderError:public std::exception

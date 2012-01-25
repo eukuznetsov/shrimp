@@ -31,3 +31,8 @@ void LogReader::InBaseReader::watch()
         inotifyFile.WaitForEvents();
     }
 }
+
+LogReader::InBaseReader::~InBaseReader()
+{
+  file.close();
+}

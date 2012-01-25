@@ -3,11 +3,15 @@ CONFIG += console
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    inbase.cpp \
-    error.cpp \
-    inotify-cxx.cpp
+    inotify-cxx.cpp \
+    inbasereader.cpp \
+    inbasereadererror.cpp \
+    mysqldatabase.cpp
 
 HEADERS += \
-    reader.h \
-    inotify-cxx.h
+    inotify-cxx.h \
+    logreader.h \
+    databaseexcp.h \
+    basedatabase.h \
+    mysqldatabase.h
 
