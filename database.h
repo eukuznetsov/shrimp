@@ -1,4 +1,0 @@
-#ifndef BASEDATABASE_H
-#define BASEDATABASE_H
-
-#endif // BASEDATABASE_H
