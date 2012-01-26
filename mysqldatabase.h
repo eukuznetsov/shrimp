@@ -2,15 +2,18 @@
 #define MYSQLDATABASE_H
 
 #include <mysql.h>
+#include <databaseexcp.h>
 
 class MysqlDatabase
 {
   MYSQL dbsession;
 public:
-  MysqlDatabase(const char*, const char*, const char*, const char*,
-                int port=0,
-                const char* unix_socket=0,
-                unsigned long clientflag=0);
+  MysqlDatabase() {}
+  void connect(const char*, const char*, const char*, const char*,
+               int port=0,
+               const char* unix_socket=0,
+               unsigned long clientflag=0);
+  void query(const char*);
   ~MysqlDatabase() { mysql_close(&dbsession); }
 };
 
