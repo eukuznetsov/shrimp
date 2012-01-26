@@ -15,10 +15,10 @@ class InBaseReader
     std::string filePath;
     ino_t inode;
 public:
-    InBaseReader(char*);
+    InBaseReader(const char*);
     const char* filepath() { return filePath.c_str(); }
     void watch();
-    ~InBaseReader();
+    ~InBaseReader() { file.close(); }
 };
 
 class InBaseReaderError:public std::exception
@@ -26,10 +26,14 @@ class InBaseReaderError:public std::exception
     std::string path;
     std::string message;
 public:
-    InBaseReaderError(char*, char*);
+    InBaseReaderError(char* filePath, char* messageText)
+    {
+      path = filePath;
+      message = messageText;
+    };
     const char* filepath() { return path.c_str(); }
     const char* what() { return message.c_str(); }
-    ~InBaseReaderError() throw();
+    ~InBaseReaderError() throw() {}
 };
 
 };

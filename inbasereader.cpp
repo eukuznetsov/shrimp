@@ -4,19 +4,19 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-LogReader::InBaseReader::InBaseReader(char* pathToFile)
+LogReader::InBaseReader::InBaseReader(const char *pathToFile)
 {
     filePath = pathToFile;
     file.open(pathToFile);
     if(!file.is_open())
     {
-        throw LogReader::InBaseReaderError(pathToFile, "Can't open");
+//        throw LogReader::InBaseReaderError(pathToFile, "Can't open");
     }
     //get time of creation file
     struct stat fileStatus;
     if (lstat(pathToFile, &fileStatus)!=0)
     {
-        throw LogReader::InBaseReaderError(pathToFile, "Can't read information about file");
+//        throw LogReader::InBaseReaderError(pathToFile, "Can't read information about file");
     }
     inode = fileStatus.st_ino;
 }
@@ -30,9 +30,4 @@ void LogReader::InBaseReader::watch()
     {
         inotifyFile.WaitForEvents();
     }
-}
-
-LogReader::InBaseReader::~InBaseReader()
-{
-  file.close();
 }
