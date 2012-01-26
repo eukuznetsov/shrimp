@@ -7,16 +7,20 @@
 LogReader::InBaseReader::InBaseReader(const char *pathToFile)
 {
     filePath = pathToFile;
-    file.open(pathToFile);
+}
+
+void LogReader::InBaseReader::open()
+{
+    file.open(filePath.c_str());
     if(!file.is_open())
     {
-//        throw LogReader::InBaseReaderError(pathToFile, "Can't open");
+        throw LogReader::InBaseReaderError(filePath.c_str(), "Can't open");
     }
     //get time of creation file
     struct stat fileStatus;
-    if (lstat(pathToFile, &fileStatus)!=0)
+    if (lstat(filePath.c_str(), &fileStatus)!=0)
     {
-//        throw LogReader::InBaseReaderError(pathToFile, "Can't read information about file");
+        throw LogReader::InBaseReaderError(filePath.c_str(), "Can't read information about file");
     }
     inode = fileStatus.st_ino;
 }

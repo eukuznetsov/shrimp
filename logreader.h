@@ -16,6 +16,7 @@ class InBaseReader
     ino_t inode;
 public:
     InBaseReader(const char*);
+    void open();
     const char* filepath() { return filePath.c_str(); }
     void watch();
     ~InBaseReader() { file.close(); }
@@ -26,7 +27,7 @@ class InBaseReaderError:public std::exception
     std::string path;
     std::string message;
 public:
-    InBaseReaderError(char* filePath, char* messageText)
+    InBaseReaderError(const char* filePath, const char* messageText)
     {
       path = filePath;
       message = messageText;
