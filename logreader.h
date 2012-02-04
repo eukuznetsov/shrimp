@@ -4,14 +4,19 @@
 #include <string>
 #include <fstream>
 #include <exception>
+#include <vector>
+#include <string>
 
 namespace LogReader
 {
+
+typedef std::vector<std::string> StringList;
 
 class InBaseReader
 {
     std::ifstream file;
     std::string filePath;
+    void parse(const std::string) const;
 public:
     InBaseReader(const char*);
     void open();
@@ -34,6 +39,8 @@ public:
     const char* what() { return message.c_str(); }
     ~InBaseReaderError() throw() {}
 };
+
+StringList split(const std::string, const std::string, bool);
 
 };
 #endif // LOGREADER_H

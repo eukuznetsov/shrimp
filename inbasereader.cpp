@@ -2,6 +2,7 @@
 #include <iostream>
 #include "inotify-cxx.h"
 #include <unistd.h>
+#include <vector>
 
 LogReader::InBaseReader::InBaseReader(const char *pathToFile)
 {
@@ -12,7 +13,6 @@ void LogReader::InBaseReader::open()
 {
     std::cout << "Open " << filepath();
     unsigned int count = 0; //number of trying
-    unsigned int seconds = 1; //seconds for waiting
     unsigned int counts = 10; //all trying
     file.open(filePath.c_str());
     while((!file.is_open())&&(count < counts))
@@ -20,10 +20,16 @@ void LogReader::InBaseReader::open()
         std::cout << ".";
         file.open(filePath.c_str());
         count++;
-        std::cout << counts << ":" << count;
         if(count == 10) std::cout << std::endl << "Exit for timeout" << std::endl;
     }
     std::cout << std::endl;
+}
+
+
+void LogReader::InBaseReader::parse(const std::string notParsed) const
+{
+    std::string sep(" ");
+    LogReader::StringList lecs = LogReader::split(sep, notParsed, false);
 }
 
 void LogReader::InBaseReader::watch()
@@ -62,7 +68,7 @@ void LogReader::InBaseReader::watch()
                             getline(file,line);
                             if(!line.empty())
                             {
-                                std::cout << line << std::endl;
+                                parse(line);
                             }
                         }
                         file.clear();
