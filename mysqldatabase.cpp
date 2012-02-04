@@ -28,7 +28,6 @@ void MysqlDatabase::query(const char* query)
 {
     if(mysql_query(&dbsession, query)!=0)
     {
-        std::cout << mysql_error(&dbsession) <<std::endl;
-        throw DatabaseError("");
+        throw DatabaseError(mysql_error(&dbsession));
     }
 }

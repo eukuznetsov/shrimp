@@ -1,6 +1,8 @@
 #include <iostream>
 #include <boost/property_tree/ini_parser.hpp>
 #include "logreader.h"
+#include "mysqldatabase.h"
+#include <exception>
 
 int main()
 {
@@ -17,15 +19,28 @@ int main()
                 << error.line() << std::endl;
         exit(1);
     }
+    MysqlDatabase db;
     try
     {
-        LogReader::InBaseReader log("/etc/shrimp.ini");
+        db.connect((config.get<std::string>("database.path")).c_str(),
+                   (config.get<std::string>("database.user")).c_str(),
+                   (config.get<std::string>("database.password")).c_str(),
+                   (config.get<std::string>("database.dbname")).c_str());
+    }
+    catch(DatabaseError& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    LogReader::InBaseReader log("/var/log/squid/access.log");
+    try
+    {
+        log.open();
     }
     catch (LogReader::InBaseReaderError& e) {
         std::cout
                 << e.what() << " "
                 << e.filepath() << std::endl;
     }
-
+    log.watch();
     return 0;
 }

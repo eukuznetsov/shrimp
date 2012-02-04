@@ -8,9 +8,9 @@ class DatabaseError:public std::exception
 {
     std::string message;
 public:
-    Error(char* msg) { std::string message(msg); }
+    DatabaseError(const char* msg) { message = msg; }
     const char* what() { return message.c_str(); }
-    ~Error() throw();
+    ~DatabaseError() throw() {}
 };
 
 #endif // DATABASEEXCP_H
