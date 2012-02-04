@@ -1,8 +1,7 @@
 #include "logreader.h"
 #include <iostream>
 #include "inotify-cxx.h"
-#include <sys/types.h>
-#include <sys/stat.h>
+#include <unistd.h>
 
 LogReader::InBaseReader::InBaseReader(const char *pathToFile)
 {
@@ -11,27 +10,71 @@ LogReader::InBaseReader::InBaseReader(const char *pathToFile)
 
 void LogReader::InBaseReader::open()
 {
+    std::cout << "Open " << filepath();
+    unsigned int count = 0; //number of trying
+    unsigned int seconds = 1; //seconds for waiting
+    unsigned int counts = 10; //all trying
     file.open(filePath.c_str());
-    if(!file.is_open())
+    while((!file.is_open())&&(count < counts))
     {
-        throw LogReader::InBaseReaderError(filePath.c_str(), "Can't open");
+        std::cout << ".";
+        file.open(filePath.c_str());
+        count++;
+        std::cout << counts << ":" << count;
+        if(count == 10) std::cout << std::endl << "Exit for timeout" << std::endl;
     }
-    //get time of creation file
-    struct stat fileStatus;
-    if (lstat(filePath.c_str(), &fileStatus)!=0)
-    {
-        throw LogReader::InBaseReaderError(filePath.c_str(), "Can't read information about file");
-    }
-    inode = fileStatus.st_ino;
+    std::cout << std::endl;
 }
 
 void LogReader::InBaseReader::watch()
 {
-    InotifyWatch watcher(filepath(), IN_MODIFY);
-    Inotify inotifyFile;
-    inotifyFile.Add(&watcher);
-    for(;;)
+    try{
+        InotifyWatch watcher(filepath(), IN_MODIFY|IN_MOVE_SELF);
+        Inotify inotifyFile;
+        size_t count;
+        inotifyFile.Add(&watcher);
+        for(;;)
+        {
+            std::string line;
+            std::string eventMask;
+            inotifyFile.WaitForEvents();
+            count = inotifyFile.GetEventCount();
+            while(count != 0)
+            {
+                InotifyEvent event;
+                bool got_event = inotifyFile.GetEvent(&event);
+                if(got_event)
+                {
+                    event.DumpTypes(eventMask);
+                    if(eventMask=="IN_MOVE_SELF")
+                    {
+                        std::cout << "Logs rotated." << std::endl;
+                        file.close();
+                        open();
+                        inotifyFile.Remove(watcher);
+                        InotifyWatch watcher(filepath(), IN_MODIFY|IN_MOVE_SELF);
+                        inotifyFile.Add(&watcher);
+                    }
+                    if(eventMask=="IN_MODIFY")
+                    {
+                        while (!file.eof())
+                        {
+                            getline(file,line);
+                            if(!line.empty())
+                            {
+                                std::cout << line << std::endl;
+                            }
+                        }
+                        file.clear();
+                        break;
+                    }
+                }
+                count--;
+            }
+        }
+    }
+    catch (InotifyException& e)
     {
-        inotifyFile.WaitForEvents();
+        throw LogReader::InBaseReaderError(filePath.c_str(), (e.GetMessage()).c_str());
     }
 }

@@ -4,7 +4,6 @@
 #include <string>
 #include <fstream>
 #include <exception>
-#include <sys/types.h>
 
 namespace LogReader
 {
@@ -13,7 +12,6 @@ class InBaseReader
 {
     std::ifstream file;
     std::string filePath;
-    ino_t inode;
 public:
     InBaseReader(const char*);
     void open();
