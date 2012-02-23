@@ -4,9 +4,10 @@
 #include <unistd.h>
 #include <vector>
 
-LogReader::InBaseReader::InBaseReader(const char *pathToFile)
+LogReader::InBaseReader::InBaseReader(const char* pathToFile, MysqlDatabase* dbconn)
 {
     filePath = pathToFile;
+    db=dbconn;
 }
 
 void LogReader::InBaseReader::open()
@@ -30,6 +31,23 @@ void LogReader::InBaseReader::parse(const std::string notParsed) const
 {
     std::string sep(" ");
     LogReader::StringList lecs = LogReader::split(sep, notParsed, false);
+    std::string query = "INSERT INTO shrimp.squid_log (time, duration, client_address, result_codes, bytes, request_method, url, rfc931, hierarchy_code, type) VALUES (";
+    for(LogReader::StringList::iterator iter=lecs.begin(); iter<lecs.end(); iter++)
+    {
+        query += "\"";
+        query += *iter;
+        query += "\"";
+        if (iter!=lecs.end()-1) {
+            query += ",";
+        }
+    }
+    query += ")";
+    try{
+        db->query(query.c_str());
+    }
+    catch(DatabaseError &e) {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void LogReader::InBaseReader::watch()

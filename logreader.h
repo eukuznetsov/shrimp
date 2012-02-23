@@ -6,6 +6,7 @@
 #include <exception>
 #include <vector>
 #include <string>
+#include "mysqldatabase.h"
 
 namespace LogReader
 {
@@ -14,11 +15,12 @@ typedef std::vector<std::string> StringList;
 
 class InBaseReader
 {
+    MysqlDatabase* db;
     std::ifstream file;
     std::string filePath;
     void parse(const std::string) const;
 public:
-    InBaseReader(const char*);
+    InBaseReader(const char*, MysqlDatabase*);
     void open();
     const char* filepath() { return filePath.c_str(); }
     void watch();

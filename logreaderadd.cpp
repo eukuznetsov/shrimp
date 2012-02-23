@@ -7,7 +7,7 @@
 //str - string
 //allowEmptyEntries - allow or not to adding empty result
 LogReader::StringList LogReader::split( const std::string sep, const std::string str,
-                  bool allowEmptyEntries )
+                  bool allowEmptyEntries)
 {
     StringList lst;
     int j = 0;

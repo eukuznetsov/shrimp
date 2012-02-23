@@ -31,7 +31,7 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
-    LogReader::InBaseReader log("/var/log/squid/access.log");
+    LogReader::InBaseReader log("/var/log/squid/access.log", &db);
     try
     {
         log.open();
