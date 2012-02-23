@@ -27,7 +27,7 @@ void MysqlDatabase::connect(const char* host,
 
 std::vector<std::vector<std::string> > MysqlDatabase::query(const char* query)
 {
-    std::vector<std::vector<std::string> > all_res; //all rows
+    QueryResult all_res; //all rows
     std::vector<std::string> result; // one row
     if(mysql_query(&dbsession, query)!=0)
     {
