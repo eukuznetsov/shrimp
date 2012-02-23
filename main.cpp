@@ -3,6 +3,7 @@
 #include "logreader.h"
 #include "mysqldatabase.h"
 #include <exception>
+#include <vector>
 
 int main()
 {
