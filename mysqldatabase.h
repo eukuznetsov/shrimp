@@ -4,6 +4,9 @@
 #include <mysql.h>
 #include <databaseexcp.h>
 #include <vector>
+#include <string>
+
+typedef std::vector<std::vector<std::string> > QueryResult;
 
 class MysqlDatabase
 {

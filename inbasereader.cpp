@@ -3,6 +3,7 @@
 #include "inotify-cxx.h"
 #include <unistd.h>
 #include <vector>
+#include "mysqldatabase.h"
 
 LogReader::InBaseReader::InBaseReader(const char* pathToFile, MysqlDatabase* dbconn)
 {
@@ -50,12 +51,14 @@ void LogReader::InBaseReader::parse(const std::string notParsed) const
     }
 }
 
+
 void LogReader::InBaseReader::watch()
 {
     try{
         InotifyWatch watcher(filepath(), IN_MODIFY|IN_MOVE_SELF);
         Inotify inotifyFile;
         size_t count;
+
         inotifyFile.Add(&watcher);
         for(;;)
         {
