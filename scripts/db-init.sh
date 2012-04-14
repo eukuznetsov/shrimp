@@ -1,0 +1,9 @@
+#!/bin/bash
+
+MYSQL=`which mysql`
+USERNAME="shrimp"
+DATABASE="shrimp"
+HOST="localhost"
+PASSWORD="test"
+
+$MYSQL -uroot -p -e "CREATE DATABASE IF NOT EXISTS ${DATABASE}; GRANT ALL ON *.* TO '${DATABASE}'@'${HOST}' IDENTIFIED BY '${PASSWORD}';FLUSH PRIVILEGES;"
