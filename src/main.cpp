@@ -21,6 +21,8 @@ int main()
                 << error.line() << std::endl;
         exit(1);
     }
+
+    //connect to the database
     MysqlDatabase db;
     try
     {
@@ -33,6 +35,8 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
+
+    //open log-file
     LogReader::InBaseReader log("/var/log/squid/access.log", &db);
     try
     {
@@ -44,5 +48,6 @@ int main()
                 << e.filepath() << std::endl;
     }
     log.watch();
+
     return 0;
 }
