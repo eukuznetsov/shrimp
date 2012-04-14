@@ -2,10 +2,6 @@
 #include <vector>
 #include <string>
 
-//split string by separator
-//sep - separator
-//str - string
-//allowEmptyEntries - allow or not to adding empty result
 LogReader::StringList LogReader::split( const std::string sep, const std::string str,
                   bool allowEmptyEntries)
 {

@@ -60,6 +60,7 @@ public:
     const char* filepath() { return filePath.c_str(); }
     /**
       @brief Start tracking file
+      @throw LogReader::InBaseReaderError
       */
     void watch();
     /**
@@ -68,22 +69,49 @@ public:
     ~InBaseReader() { file.close(); }
 };
 
+/**
+  @brief Exception for class InBaseReader
+  */
 class InBaseReaderError:public std::exception
 {
+    /**
+      @brief Path to the log file
+      */
     std::string path;
     std::string message;
 public:
+    /**
+      @brief Constructor
+      @param filePath Path to the log file
+      @param messageText Text of message
+      */
     InBaseReaderError(const char* filePath, const char* messageText)
     {
       path = filePath;
       message = messageText;
     };
+    /**
+      @brief Recieve path to the log file
+      @return Path to the log file
+      */
     const char* filepath() { return path.c_str(); }
+    /**
+      @brief Recieve message of exception
+      @return Message
+      */
     const char* what() { return message.c_str(); }
     ~InBaseReaderError() throw() {}
 };
 
-StringList split(const std::string, const std::string, bool);
+/**
+  @brief Split string by separator-string
+  @param sep Separator
+  @param str Source string
+  @param allowEmptyEntries Allow or not empty string in result list
+  @return Source string separated in list of strings
+  */
+StringList split(const std::string sep, const std::string str, bool allowEmptyEntries);
 
-};
+}
+
 #endif // LOGREADER_H
