@@ -8,22 +8,63 @@
 #include <string>
 #include "mysqldatabase.h"
 
+/**
+  namespace LogReader
+  @brief Namespace of classes reading logs
+  */
 namespace LogReader
 {
 
+/**
+  @brief List of strings type
+  */
 typedef std::vector<std::string> StringList;
 
+/**
+  @brief Class reading log and writing parsed log in database
+  */
 class InBaseReader
 {
+    /**
+      @brief Session identificator
+      */
     MysqlDatabase* db;
+    /**
+      @brief Log file
+      */
     std::ifstream file;
+    /**
+      @brief Log file path
+      */
     std::string filePath;
-    void parse(const std::string) const;
+    /**
+      @brief Parse log line and write it in database
+      @param notParsed String for parsing
+      */
+    void parse(const std::string notParsed) const;
 public:
-    InBaseReader(const char*, MysqlDatabase*);
+    /**
+      @brief Constructor
+      @param pathToFile Path to the log file
+      @param dbconn Connection to database
+      */
+    InBaseReader(const char* pathToFile, MysqlDatabase* dbconn);
+    /**
+      @brief Opening log file
+      */
     void open();
+    /**
+      @brief Recieve path to the watched log file
+      @return Path to the log file
+      */
     const char* filepath() { return filePath.c_str(); }
+    /**
+      @brief Start tracking file
+      */
     void watch();
+    /**
+      @brief Destructor
+      */
     ~InBaseReader() { file.close(); }
 };
 
