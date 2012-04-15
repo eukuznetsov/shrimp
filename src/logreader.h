@@ -64,6 +64,12 @@ public:
       */
     void watch();
     /**
+      @brief Check exists line of log in base or not
+      @param line Line for search
+      @return True if line already exists in database, false in otherwise
+      */
+    bool isAlreadyInBase(const std::string line) const;
+    /**
       @brief Destructor
       */
     ~InBaseReader() { file.close(); }
