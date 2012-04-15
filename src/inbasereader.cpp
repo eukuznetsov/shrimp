@@ -35,11 +35,8 @@ void LogReader::InBaseReader::open()
     std::string logline;
     do {
         getline(file, logline);
-        std::cout << "Check: " << logline << std::endl;
-        std::cout << "Position: " << file.tellg() <<std::endl;
     }while(isAlreadyInBase(logline));
     file.seekg(-(logline.size()+1), std::ios::cur);
-    std::cout << "Position: " << file.tellg() <<std::endl;
     if(file.eof()) file.clear();
 }
 
@@ -142,7 +139,6 @@ bool LogReader::InBaseReader::isAlreadyInBase(const std::string line) const
     catch(DatabaseError &e) {
         std::cout << e.what() << std::endl;
     }
-    std::cout << res.size() << std::endl;
     if(res.empty()) {
         return false;
     }else {
