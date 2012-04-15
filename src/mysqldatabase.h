@@ -25,16 +25,22 @@ public:
     @param port Port for connection
     @param unix_socket UNix socket. Default to 0.
     @param clientflag Client's flag for connection. Default to 0.
+    \throw DatabaseError
     */
   //WTF? is clientflag
   void connect(const char* host,
                const char* user,
                const char* password,
                const char* database,
-               int port,
+               int port=0,
                const char* unix_socket=0,
                unsigned long clientflag=0);
-  std::vector<std::vector<std::string> > query(const char*);
+  /**
+    @brief Query to the database
+    @param query SQL query to the database
+    @return Result of a query in a list
+    */
+  std::vector<std::vector<std::string> > query(const char* query);
   ~MysqlDatabase() { mysql_close(&dbsession); }
 };
 
