@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <vector>
 #include "mysqldatabase.h"
+#include <boost/format.hpp>
 
 LogReader::InBaseReader::InBaseReader(const char* pathToFile, MysqlDatabase* dbconn)
 {
@@ -28,6 +29,11 @@ void LogReader::InBaseReader::open()
 
     }
 
+    //search last line from log writed in database
+    std::string logline;
+    do {
+        getline(file, logline);
+    }while(!isAlreadyInBase(logline));
     std::cout << std::endl;
 }
 
@@ -38,7 +44,7 @@ void LogReader::InBaseReader::parse(const std::string notParsed) const
     LogReader::StringList lecs = LogReader::split(sep, notParsed, false); //lecsems - it's result of spliting stirn by separator
 
     //Build query to the database for adding log line
-    std::string query = "INSERT INTO shrimp.squid_log (time, duration, client_address, result_codes, bytes, request_method, url, rfc931, hierarchy_code, type) VALUES (";
+    std::string query = "INSERT INTO shrimp.squid_access_log (time, duration, client_address, result_codes, bytes, request_method, url, rfc931, hierarchy_code, type) VALUES (";
     for(LogReader::StringList::iterator iter=lecs.begin(); iter<lecs.end(); iter++)
     {
         query += "\"";
@@ -116,5 +122,23 @@ void LogReader::InBaseReader::watch()
     catch (InotifyException& e)
     {
         throw LogReader::InBaseReaderError(filePath.c_str(), (e.GetMessage()).c_str());
+    }
+}
+
+bool LogReader::InBaseReader::isAlreadyInBase(const std::string line) const
+{
+    QueryResult res;
+    LogReader::StringList lecs = LogReader::split(" ", line, false); //lecsems - it's result of spliting string by separator
+    std::string query = boost::str(boost::format("SELECT id FROM squid_access_log WHERE time=%d AND duration=%d AND client_address='%s' AND result_codes='%s' AND bytes=%d AND request_method='%s' AND url='%s' AND rfc931='%s' AND hierarchy_code='%s' AND type='%s'") % lecs.at(0) % lecs.at(1) % lecs.at(2) % lecs.at(3) % lecs.at(4) % lecs.at(5) % lecs.at(6) % lecs.at(7) % lecs.at(8) % lecs.at(9));
+    try{
+        res = db->query(query.c_str());
+    }
+    catch(DatabaseError &e) {
+        std::cout << e.what() << std::endl;
+    }
+    if(res.empty()) {
+        return false;
+    }else {
+        return true;
     }
 }
