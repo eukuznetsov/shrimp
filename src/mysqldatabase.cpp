@@ -47,7 +47,7 @@ std::vector<std::vector<std::string> > MysqlDatabase::query(const char* query)
             while((row = mysql_fetch_row(res)) != NULL)
             {
                 //get row
-                for (i = 0; i<=num_fields; i++)
+                for (i = 0; i<num_fields; i++)
                 {
                     result.push_back(row[i]);
                 }
