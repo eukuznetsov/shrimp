@@ -1,0 +1,3 @@
+# Shrimp
+Shrimp is real-time monitor for proxy-server Squid.
+Shrimp use inotify and MySQL.
