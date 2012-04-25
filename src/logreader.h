@@ -68,7 +68,7 @@ public:
     /**
       @brief Read the file until the end
       */
-    void read();
+    void readFile();
     /**
       @brief Destructor
       */

@@ -40,6 +40,7 @@ void LogReader::BaseParser::open()
         getline(file, logline);
     }while(isAlreadyInBase(logline));
     file.seekg(-(logline.size()+1), std::ios::cur);
+    readFile();
     if(file.eof()) file.clear();
 }
 
@@ -88,7 +89,7 @@ bool LogReader::BaseParser::isAlreadyInBase(const std::string line) const
     }
 }
 
-void LogReader::BaseParser::read()
+void LogReader::BaseParser::readFile()
 {
     std::string line;
     while (!file.eof())

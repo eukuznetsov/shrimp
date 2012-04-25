@@ -38,7 +38,7 @@ void LogReader::ParserInotify::watch()
                     //File modified
                     if(eventMask=="IN_MODIFY")
                     {
-                        read();
+                        readFile();
                         file.clear();
                         break;
                     }
