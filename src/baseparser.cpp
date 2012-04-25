@@ -26,7 +26,10 @@ void LogReader::BaseParser::open()
         std::cout << ".";
         file.open(filePath.c_str());
         count++;
-        if(count == 10) std::cout << std::endl << "Exit for timeout" << std::endl;
+        if(count == 10) {
+            std::cout << std::endl << "Exit for timeout" << std::endl;
+            exit(1);
+        }
 
     }
     std::cout << std::endl;
