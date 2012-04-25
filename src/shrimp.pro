@@ -4,9 +4,10 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     inotify-cxx.cpp \
-    inbasereader.cpp \
     mysqldatabase.cpp \
-    logreaderadd.cpp
+    logreaderadd.cpp \
+    parserinotify.cpp \
+    baseparser.cpp
 
 HEADERS += \
     inotify-cxx.h \

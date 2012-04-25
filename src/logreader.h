@@ -21,10 +21,11 @@ namespace LogReader
 typedef std::vector<std::string> StringList;
 
 /**
-  @brief Class reading log and writing parsed log in database
+  @brief Base class for parsers of logs
   */
-class ParserInotify
+class BaseParser
 {
+protected:
     /**
       @brief Session identificator
       */
@@ -48,7 +49,7 @@ public:
       @param pathToFile Path to the log file
       @param dbconn Connection to database
       */
-    ParserInotify(const char* pathToFile, MysqlDatabase* dbconn);
+    BaseParser(const char* pathToFile, MysqlDatabase* dbconn);
     /**
       @brief Opening log file
       */
@@ -59,20 +60,36 @@ public:
       */
     const char* filepath() { return filePath.c_str(); }
     /**
-      @brief Start tracking file
-      @throw LogReader::InBaseReaderError
-      */
-    void watch();
-    /**
       @brief Check exists line of log in base or not
       @param line Line for search
       @return True if line already exists in database, false in otherwise
       */
     bool isAlreadyInBase(const std::string line) const;
     /**
+      @brief Read the file until the end
+      */
+    void read();
+    /**
       @brief Destructor
       */
-    ~ParserInotify() { file.close(); }
+    ~BaseParser() { file.close(); }
+};
+
+/**
+  @brief Class reading log and writing parsed log in database. It using Inotify.
+  */
+class ParserInotify:public BaseParser
+{
+public:
+    /**
+      @brief Constructor
+      */
+    ParserInotify(const char* pathToFile, MysqlDatabase* dbconn):BaseParser(pathToFile, dbconn){}
+    /**
+      @brief Start tracking file
+      @throw LogReader::InBaseReaderError
+      */
+    void watch();
 };
 
 /**
