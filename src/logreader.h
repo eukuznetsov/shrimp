@@ -23,7 +23,7 @@ typedef std::vector<std::string> StringList;
 /**
   @brief Class reading log and writing parsed log in database
   */
-class InBaseReader
+class ParserInotify
 {
     /**
       @brief Session identificator
@@ -48,7 +48,7 @@ public:
       @param pathToFile Path to the log file
       @param dbconn Connection to database
       */
-    InBaseReader(const char* pathToFile, MysqlDatabase* dbconn);
+    ParserInotify(const char* pathToFile, MysqlDatabase* dbconn);
     /**
       @brief Opening log file
       */
@@ -72,13 +72,13 @@ public:
     /**
       @brief Destructor
       */
-    ~InBaseReader() { file.close(); }
+    ~ParserInotify() { file.close(); }
 };
 
 /**
   @brief Exception for class InBaseReader
   */
-class InBaseReaderError:public std::exception
+class ParserError:public std::exception
 {
     /**
       @brief Path to the log file
@@ -91,7 +91,7 @@ public:
       @param filePath Path to the log file
       @param messageText Text of message
       */
-    InBaseReaderError(const char* filePath, const char* messageText)
+    ParserError(const char* filePath, const char* messageText)
     {
       path = filePath;
       message = messageText;
@@ -106,7 +106,7 @@ public:
       @return Message
       */
     const char* what() { return message.c_str(); }
-    ~InBaseReaderError() throw() {}
+    ~ParserError() throw() {}
 };
 
 /**

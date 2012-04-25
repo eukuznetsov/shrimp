@@ -37,12 +37,12 @@ int main()
     }
 
     //open log-file
-    LogReader::InBaseReader log("/var/log/squid/access.log", &db);
+    LogReader::ParserInotify log("/var/log/squid/access.log", &db);
     try
     {
         log.open();
     }
-    catch (LogReader::InBaseReaderError& e) {
+    catch (LogReader::ParserError& e) {
         std::cout
                 << e.what() << " "
                 << e.filepath() << std::endl;

@@ -7,13 +7,13 @@
 #include <boost/format.hpp>
 #include <fstream>
 
-LogReader::InBaseReader::InBaseReader(const char* pathToFile, MysqlDatabase* dbconn)
+LogReader::ParserInotify::ParserInotify(const char* pathToFile, MysqlDatabase* dbconn)
 {
     filePath = pathToFile;
     db=dbconn;
 }
 
-void LogReader::InBaseReader::open()
+void LogReader::ParserInotify::open()
 {
     std::cout << "Open " << filepath();
     unsigned int count = 0; //number of tryings
@@ -41,7 +41,7 @@ void LogReader::InBaseReader::open()
 }
 
 
-void LogReader::InBaseReader::parse(const std::string notParsed) const
+void LogReader::ParserInotify::parse(const std::string notParsed) const
 {
     std::string sep(" "); //separator for log line
     LogReader::StringList lecs = LogReader::split(sep, notParsed, false); //lecsems - it's result of spliting stirn by separator
@@ -68,7 +68,7 @@ void LogReader::InBaseReader::parse(const std::string notParsed) const
 }
 
 
-void LogReader::InBaseReader::watch()
+void LogReader::ParserInotify::watch()
 {
     try{
         //Inotify variables
@@ -124,11 +124,11 @@ void LogReader::InBaseReader::watch()
     }
     catch (InotifyException& e)
     {
-        throw LogReader::InBaseReaderError(filePath.c_str(), (e.GetMessage()).c_str());
+        throw LogReader::ParserError(filePath.c_str(), (e.GetMessage()).c_str());
     }
 }
 
-bool LogReader::InBaseReader::isAlreadyInBase(const std::string line) const
+bool LogReader::ParserInotify::isAlreadyInBase(const std::string line) const
 {
     QueryResult res;
     LogReader::StringList lecs = LogReader::split(" ", line, false); //lecsems - it's result of spliting string by separator
