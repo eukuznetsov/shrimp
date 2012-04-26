@@ -1,6 +1,7 @@
 #include "logreader.h"
 #include <vector>
 #include <string>
+#include <boost/filesystem.hpp>
 
 LogReader::StringList LogReader::split( const std::string sep, const std::string str,
                   bool allowEmptyEntries)
@@ -27,5 +28,6 @@ LogReader::StringList LogReader::split( const std::string sep, const std::string
 LogReader::StringList LogReader::findRotated(const std::string name, const std::string path)
 {
     StringList rotated;
+    boost::filesystem3::directory_iterator(path.c_str());
     return rotated;
 }

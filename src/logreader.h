@@ -137,9 +137,8 @@ StringList split(const std::string sep, const std::string str, bool allowEmptyEn
 
 /**
   @brief Search rotated logs
-  @param name Canonical filename of log
-  @param path Path to the directory with logs
-  @return List of filenames of logs
+  @param path Path to the main log
+  @return List of filenames of rotated logs
   */
 StringList findRotated(const std::string name, const std::string path);
 }
