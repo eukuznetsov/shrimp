@@ -36,10 +36,13 @@ void LogReader::BaseParser::open()
 
     //search last line from log writed in database
     std::string logline;
+    int shift=0; //shift at begin of the file
     do {
+        if(file.eof()) break;
+        shift+=logline.size();
         getline(file, logline);
     }while(isAlreadyInBase(logline));
-    file.seekg(-(logline.size()+1), std::ios::cur);
+    file.seekg(shift, std::ios::beg);
     readFile();
     if(file.eof()) file.clear();
 }
@@ -75,6 +78,10 @@ bool LogReader::BaseParser::isAlreadyInBase(const std::string line) const
 {
     QueryResult res;
     LogReader::StringList lecs = LogReader::split(" ", line, false); //lecsems - it's result of spliting string by separator
+
+    //TODO: add exception for wrong formating lines
+    if (lecs.size()!=10) return true; //break lines. Say what it in base.
+
     std::string query = boost::str(boost::format("SELECT id FROM squid_access_log WHERE time=%d AND duration=%d AND client_address='%s' AND result_codes='%s' AND bytes=%d AND request_method='%s' AND url='%s' AND rfc931='%s' AND hierarchy_code='%s' AND type='%s'") % lecs.at(0) % lecs.at(1) % lecs.at(2) % lecs.at(3) % lecs.at(4) % lecs.at(5) % lecs.at(6) % lecs.at(7) % lecs.at(8) % lecs.at(9));
     try{
         res = db->query(query.c_str());
