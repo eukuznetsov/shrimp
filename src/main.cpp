@@ -7,6 +7,8 @@
 
 int main()
 {
+    //TODO: Path to the logs add in config file
+
     //reading configuration
     boost::property_tree::ptree config;
     try
@@ -35,6 +37,9 @@ int main()
     {
         std::cout << e.what() << std::endl;
     }
+
+    //process rotated files
+
 
     //open log-file
     LogReader::ParserInotify log("/var/log/squid/access.log", &db);
