@@ -135,6 +135,13 @@ public:
   */
 StringList split(const std::string sep, const std::string str, bool allowEmptyEntries);
 
+/**
+  @brief Search rotated logs
+  @param name Canonical filename of log
+  @param path Path to the directory with logs
+  @return List of filenames of logs
+  */
+StringList findRotated(const std::string name, const std::string path);
 }
 
 #endif // LOGREADER_H

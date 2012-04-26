@@ -23,3 +23,9 @@ LogReader::StringList LogReader::split( const std::string sep, const std::string
         lst.push_back( "" );
     return lst;
 }
+
+LogReader::StringList LogReader::findRotated(const std::string name, const std::string path)
+{
+    StringList rotated;
+    return rotated;
+}
