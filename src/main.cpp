@@ -38,8 +38,15 @@ int main()
         std::cout << e.what() << std::endl;
     }
 
-    //process rotated files
-    LogReader::find_rotated("/var/log/squid/access.log");
+    //process rotated logs
+    LogReader::StringList rotated = LogReader::find_rotated("/var/log/squid/access.log");
+    for(LogReader::StringList::iterator file = rotated.begin();
+        file != rotated.end();
+        file++)
+    {
+        LogReader::BaseParser r_log((*file).c_str(), &db);
+        r_log.readFile();
+    }
 
     //open log-file
     LogReader::ParserInotify log("/var/log/squid/access.log", &db);

@@ -140,7 +140,7 @@ StringList split(const std::string sep, const std::string str, bool allowEmptyEn
   @param path Path to the main log
   @return List of filenames of rotated logs. List empty in case of error or if rotated files not found.
   */
-StringList findRotated(const std::string path);
+StringList find_rotated(const std::string path);
 }
 
 #endif // LOGREADER_H
