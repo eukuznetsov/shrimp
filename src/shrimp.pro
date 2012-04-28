@@ -17,4 +17,4 @@ HEADERS += \
 
 INCLUDEPATH += /usr/include/mysql/
 
-unix:!macx:!symbian: LIBS += -lmysqlclient -lboost_system -lboost_filesystem
+unix:!macx:!symbian: LIBS += -lmysqlclient -lboost_system -lboost_filesystem -lboost_regex

@@ -1,7 +1,9 @@
 #include "logreader.h"
-#include <vector>
+#include <list>
 #include <string>
 #include <boost/filesystem.hpp>
+#include <algorithm>
+#include <boost/regex.hpp>
 
 LogReader::StringList LogReader::split( const std::string sep, const std::string str,
                   bool allowEmptyEntries)
@@ -25,9 +27,28 @@ LogReader::StringList LogReader::split( const std::string sep, const std::string
     return lst;
 }
 
-LogReader::StringList LogReader::findRotated(const std::string name, const std::string path)
+LogReader::StringList LogReader::find_rotated(const std::string path)
 {
     StringList rotated;
-    boost::filesystem3::directory_iterator(path.c_str());
+    std::list<boost::filesystem3::path> files; //all files in log's directory
+    boost::filesystem3::path log_path=path;
+
+    //create listing of directory
+    std::copy(boost::filesystem3::directory_iterator(log_path.remove_filename()),
+              boost::filesystem3::directory_iterator(),
+              std::back_inserter(files));
+
+    //search rotated logs in listing of directory by regular expression
+    boost::regex path_regexp("^"+path+".[0-9]*$");
+    for(std::list<boost::filesystem3::path>::iterator file = files.begin();
+        file!=files.end();
+        file++)
+    {
+        if (boost::regex_match((*file).c_str(), path_regexp))
+        {
+            rotated.push_back((*file).c_str());
+        }
+    }
+
     return rotated;
 }

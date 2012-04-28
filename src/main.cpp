@@ -39,7 +39,7 @@ int main()
     }
 
     //process rotated files
-
+    LogReader::find_rotated("/var/log/squid/access.log");
 
     //open log-file
     LogReader::ParserInotify log("/var/log/squid/access.log", &db);
