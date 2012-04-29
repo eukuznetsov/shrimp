@@ -48,6 +48,7 @@ int main()
         file++)
     {
         LogReader::BaseParser r_log((*file).c_str(), &db);
+        r_log.open();
         r_log.readFile();
     }
 
