@@ -4,10 +4,14 @@
 #include "mysqldatabase.h"
 #include <exception>
 #include <vector>
+#include <glog/logging.h>
 
-int main()
+int main(int argc, char* argv[])
 {
+    // Initialize Google's logging library.
+    google::InitGoogleLogging(argv[0]);
     //reading configuration
+    LOG(INFO) << "Start";
     boost::property_tree::ptree config;
     try
     {
