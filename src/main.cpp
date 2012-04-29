@@ -4,6 +4,7 @@
 #include "mysqldatabase.h"
 #include <exception>
 #include <vector>
+#include <string>
 
 int main()
 {
@@ -38,8 +39,10 @@ int main()
         std::cout << e.what() << std::endl;
     }
 
+    std::string log_path("/var/log/squid/access.log");
+
     //process rotated logs
-    LogReader::StringList rotated = LogReader::find_rotated("/var/log/squid/access.log");
+    LogReader::StringList rotated = LogReader::find_rotated(log_path);
     for(LogReader::StringList::iterator file = rotated.begin();
         file != rotated.end();
         file++)
@@ -49,7 +52,7 @@ int main()
     }
 
     //open log-file
-    LogReader::ParserInotify log("/var/log/squid/access.log", &db);
+    LogReader::ParserInotify log(log_path.c_str(), &db);
     try
     {
         log.open();
