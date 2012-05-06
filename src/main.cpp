@@ -42,10 +42,11 @@ int main()
     std::string log_path("/var/log/squid/access.log");
 
     //process rotated logs
+    //Rotated logs process from the last to the first. It's save order of request.
     LogReader::StringList rotated = LogReader::find_rotated(log_path);
-    for(LogReader::StringList::iterator file = rotated.begin();
-        file != rotated.end();
-        file++)
+    for(LogReader::StringList::iterator file = rotated.end()-1;
+        file != rotated.begin();
+        file--)
     {
         LogReader::BaseParser r_log((*file).c_str(), &db);
         r_log.open();
