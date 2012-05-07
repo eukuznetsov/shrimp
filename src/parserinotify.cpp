@@ -52,4 +52,5 @@ void LogReader::ParserInotify::watch()
     {
         throw LogReader::ParserError(filePath.c_str(), (e.GetMessage()).c_str());
     }
+
 }
