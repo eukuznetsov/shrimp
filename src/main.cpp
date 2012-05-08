@@ -17,8 +17,7 @@ int main()
     tm* localtm = localtime(&now);
 
     //init logging (INFO/WARNING/ERROR/FATAL)
-    //Log *pLog = new Log("/var/log/shrimp/access.log");
-    Log *pLog = new Log("shrimp_init.log");
+    Log *pLog = new Log("/var/log/shrimp/shrimp_init.log");
     pLog->Write("%s :: INFO :: Shrimp init", asctime(localtm));
 
     //reading configuration
@@ -34,10 +33,8 @@ int main()
                 << error.message() << " : "
                 << error.filename() << ", line "
                 << error.line() << std::endl;
-        //LOG(ERROR) << "INI config file error: "
-        //           << error.message() << " : "
-        //           << error.filename() << ", line "
-        //           << error.line();
+        //pLog->Write("%s :: ERROR :: INI config file error: %s : %s, line %i", asctime(localtm), error.message(), error.filename(), error.line());
+        pLog->Write("%s :: ERROR :: INI config file error", asctime(localtm));
         exit(1);
     }
 
@@ -54,7 +51,7 @@ int main()
     catch(DatabaseError& e)
     {
         std::cout << e.what() << std::endl;
-        //LOG(ERROR) << "DatabaseError: " << e.what();
+        pLog->Write("%s :: ERROR :: DatabaseError: %s", asctime(localtm), e.what());
     }
     //open log-file
     LogReader::ParserInotify log("/var/log/squid/access.log", &db);
@@ -68,21 +65,9 @@ int main()
         std::cout
                 << e.what() << " "
                 << e.filepath() << std::endl;
-        //LOG(ERROR) << "LogReader parse error: "
-        //           << e.what() << " : "
-        //           << e.filepath();
+        pLog->Write("%s :: ERROR :: LogReader parse error: %s %s", asctime(localtm), e.what(), e.filepath());
     }
-    try{
-        log.watch();
-        pLog->Write("%s :: INFO :: access.log file watching", asctime(localtm));
-    }
-    catch (LogReader::ParserError &e){
-        std::cout
-            << e.what() << " "
-            << e.filepath() << std::endl;
-        //LOG(ERROR) << "LogReader parse error on watching: "
-        //        << e.what() << " : "
-        //        << e.filepath();
-    }
+    pLog->Write("%s :: INFO :: access.log file is watching", asctime(localtm));
+    log.watch();
     return 0;
 }
