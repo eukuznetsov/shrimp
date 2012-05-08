@@ -8,11 +8,16 @@
 #include <cstdlib>
 #include <ctime>
 #include <stdarg.h>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+#include <stdarg.h>
 
 int main()
 {
     // init time for logging func
     // Current date/time based on current system
+    //TODO: Path to the logs add in config file
     time_t now = time(0);
     tm* localtm = localtime(&now);
 
@@ -53,13 +58,25 @@ int main()
         std::cout << e.what() << std::endl;
         pLog->Write("%s :: ERROR :: DatabaseError: %s", asctime(localtm), e.what());
     }
+    std::string log_path("/var/log/squid/access.log");
+
+    //process rotated logs
+    LogReader::StringList rotated = LogReader::find_rotated(log_path);
+    for(LogReader::StringList::iterator file = rotated.begin();
+        file != rotated.end();
+        file++)
+    {
+        LogReader::BaseParser r_log((*file).c_str(), &db);
+        r_log.open();
+        r_log.readFile();
+    }
+
     //open log-file
-    LogReader::ParserInotify log("/var/log/squid/access.log", &db);
+    LogReader::ParserInotify log(log_path.c_str(), &db);
     try
     {
         log.open();
         pLog->Write("%s :: INFO :: access.log file opened", asctime(localtm));
-
     }
     catch (LogReader::ParserError& e) {
         std::cout
