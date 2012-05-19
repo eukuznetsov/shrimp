@@ -38,7 +38,6 @@ int main()
                 << error.message() << " : "
                 << error.filename() << ", line "
                 << error.line() << std::endl;
-        //pLog->Write("%s :: ERROR :: INI config file error: %s : %s, line %i", asctime(localtm), error.message(), error.filename(), error.line());
         pLog->Write("%s :: ERROR :: INI config file error", asctime(localtm));
         exit(1);
     }

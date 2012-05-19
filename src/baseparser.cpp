@@ -89,7 +89,7 @@ bool LogReader::BaseParser::isAlreadyInBase(const std::string line) const
     catch(DatabaseError &e) {
         std::cout << e.what() << std::endl;
     }
-    return !res.empty()
+    return !res.empty();
 }
 
 void LogReader::BaseParser::readFile()
