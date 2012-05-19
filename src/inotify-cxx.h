@@ -1,4 +1,3 @@
-
 /// inotify C++ interface header
 /**
  * \file inotify-cxx.h
@@ -21,10 +20,6 @@
  *     Mike Frysinger (cleanup of includes)
  *
  */
-
-
-
-
 
 #ifndef _INOTIFYCXX_H_
 #define _INOTIFYCXX_H_

@@ -23,6 +23,7 @@ void MysqlDatabase::connect(const char* host,
     {
         throw DatabaseError(mysql_error(&dbsession));
     }
+
 }
 
 std::vector<std::vector<std::string> > MysqlDatabase::query(const char* query)
