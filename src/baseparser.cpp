@@ -77,12 +77,13 @@ void LogReader::BaseParser::parse(const std::string notParsed) const
 bool LogReader::BaseParser::isAlreadyInBase(const std::string line) const
 {
     QueryResult res;
-    LogReader::StringList lecs = LogReader::split(" ", line, false); //lecsems - it's result of spliting string by separator
+    LogReader::StringList tokens = LogReader::split(" ", line, false); //tokens - it's result of spliting string by separator
 
     //TODO: add exception for wrong formating lines
-    if (lecs.size()!=10) return true; //break lines. Say what it in base.
+    if (tokens.size()!=10) return true; //break lines. Say what it in base.
 
-    std::string query = boost::str(boost::format("SELECT id FROM squid_access_log WHERE time=%d AND duration=%d AND client_address='%s' AND result_codes='%s' AND bytes=%d AND request_method='%s' AND url='%s' AND rfc931='%s' AND hierarchy_code='%s' AND type='%s'") % lecs.at(0) % lecs.at(1) % lecs.at(2) % lecs.at(3) % lecs.at(4) % lecs.at(5) % lecs.at(6) % lecs.at(7) % lecs.at(8) % lecs.at(9));
+    //TODO: escape symbols in query
+    std::string query = boost::str(boost::format("SELECT id FROM squid_access_log WHERE time=%d AND duration=%d AND client_address='%s' AND result_codes='%s' AND bytes=%d AND request_method='%s' AND url='%s' AND rfc931='%s' AND hierarchy_code='%s' AND type='%s'") % tokens.at(0) % tokens.at(1) % tokens.at(2) % tokens.at(3) % tokens.at(4) % tokens.at(5) % tokens.at(6) % tokens.at(7) % tokens.at(8) % tokens.at(9));
     try{
         res = db->query(query.c_str());
     }
