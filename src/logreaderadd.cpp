@@ -30,23 +30,23 @@ LogReader::StringList LogReader::split( const std::string sep, const std::string
 LogReader::StringList LogReader::find_rotated(const std::string path)
 {
     StringList rotated;
-    std::list<boost::filesystem3::path> files; //all files in log's directory
-    boost::filesystem3::path log_path=path;
+    std::list<boost::filesystem::path> files; //all files in log's directory
+    boost::filesystem::path log_path=path;
 
     //create listing of directory
-    std::copy(boost::filesystem3::directory_iterator(log_path.remove_filename()),
-              boost::filesystem3::directory_iterator(),
+    std::copy(boost::filesystem::directory_iterator(log_path.remove_filename()),
+              boost::filesystem::directory_iterator(),
               std::back_inserter(files));
 
     //search rotated logs in listing of directory by regular expression
     boost::regex path_regexp("^"+path+".[0-9]*$");
-    for(std::list<boost::filesystem3::path>::iterator file = files.begin();
+    for(std::list<boost::filesystem::path>::iterator file = files.begin();
         file!=files.end();
         file++)
     {
-        if (boost::regex_match((*file).c_str(), path_regexp))
+        if (boost::regex_match((*file).leaf(), path_regexp))
         {
-            rotated.push_back((*file).c_str());
+            rotated.push_back((*file).leaf());
         }
     }
 
